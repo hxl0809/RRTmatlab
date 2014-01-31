@@ -16,10 +16,12 @@
 %   v.edgeq -- edge where to save intermediate configurations
 %   v.edgeu -- edge where to save intermediate controls u
 %   v.pId -- parent ID
+
+
 clear all
 clc
 
-
+% choose how to set the random seed
 RNDSEED=1;
 SEED=2486
 % ----- Determine random seed
@@ -35,22 +37,26 @@ addpath('/media/data/software/librobotics')
 
 %% Parameters
 
+
+% to see the iterations PRINTITER=1
 PRINTITER=1
+
+% to see the drawn samples PRINTSAMPLE=1
 PRINTSAMPLE=1
+
+% to load a scenario from a file
 LOAD=0
 
 % size robot
-
 global widthrobot
 global lengthrobot
-
 widthrobot=0.4;
 lengthrobot=0.6;
 
 
 % configuration space
-N=3;
-dim= [0 5 0 5 0 2*pi];
+N=3; % number of dimensions
+dim= [0 5 0 5 0 2*pi]; % lower and upper limit of the space
 
 
 % tree
@@ -144,7 +150,7 @@ tau(1).edgeq= [];
 tau(1).edgeu= [];
 tau(1).pid=0;
 
-
+% initialize variables
 addedVert=1;
 collision=0;
 goalFound=0;
@@ -187,6 +193,7 @@ goalFound=0;
         collision=collision+1;
         continue
     end
+    disp('Expansion done')
     
     %% save the vnew into the tree
     addedVert=addedVert+1;
