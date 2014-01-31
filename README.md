@@ -1,6 +1,7 @@
 Matlab implementation of Rapidly-exploring Random Trees
 
 You need to download librobotics from http://srl.informatik.uni-freiburg.de/downloads
+
 The script aims to show the basic funcionalities of RRT, for a nonholonomic differential drive wheeled mobile robot.
 Motion Primitives are generated using the ODE command provided by MATLAB
 
