@@ -45,8 +45,7 @@ PRINTITER=1
 PRINTSAMPLE=1
 
 % to load a scenario from a file
-LOAD=0
-
+LOAD=1
 % size robot
 global widthrobot
 global lengthrobot
@@ -156,7 +155,7 @@ collision=0;
 goalFound=0;
 
 % for i=1:I
-    while(goalFound<1)
+    while(~goalFound)
     
     %% Generate Configuration
     
@@ -179,7 +178,7 @@ goalFound=0;
     
     %% Nearest Vertex
     
-    vnear=nearestTree(tau,qrand);
+    vnear=nearesttree(tau,qrand);
     
     
     %% Extend

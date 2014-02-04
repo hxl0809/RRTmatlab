@@ -19,7 +19,7 @@ for i=1:nPrimitives
     [T Q] = ode45(@(t,q) unicycleKinematics( t, q, v ,omega ),tSpan,q0); % solve ODE
     
     
-    d = norm(Q(end,:)'-qrand);
+    d = norm(Q(end,1:2)'-qrand(1:2));
     if d < mind
         mind=d;
         min=i;

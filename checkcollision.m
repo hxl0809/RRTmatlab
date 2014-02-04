@@ -14,7 +14,7 @@ robotmaxsize= max([widthrobot lengthrobot]);
 for o=1:nobs
 
 
-    dist=norm(q'-obs(o).position);
+    dist=norm(q(1:2)'-obs(o).position);
     
     
     if(dist-(obs(o).radius+robotmaxsize/2)>0)
