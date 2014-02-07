@@ -6,22 +6,20 @@
 % 1.0 v Luigi Palmieri,Social Robotic Lab Freiburg
 % 
 % How obstacles are defined. Obstacles are considered circle
-%   obs.position
-%   obs.width
-%   obs.heigth
+%  obs(i).position
+%  obs(i).width
+%  obs(i).heigth
 % 
 % How a vertex is defined
-%   v.id  -- ID of the vertex
-%   v.pose -- Pose of the vertex
-%   v.edgeq -- edge where to save intermediate configurations
-%   v.edgeu -- edge where to save intermediate controls u
-%   v.pId -- parent ID
-
-
+% v.id  -- ID of the vertex
+% v.pose -- Pose of the vertex
+% v.edgeq -- edge where to save intermediate configurations
+% v.edgeu -- edge where to save intermediate controls u
+% v.pId -- parent ID
 clear all
 clc
+close all
 
-% choose how to set the random seed
 RNDSEED=1;
 SEED=2486
 % ----- Determine random seed
@@ -33,29 +31,26 @@ else
 end;
 rand('twister',rndseed);
 
-addpath('/media/data/software/librobotics')
+% addpath('/media/data/software/librobotics')
 
 %% Parameters
 
-
-% to see the iterations PRINTITER=1
 PRINTITER=1
-
-% to see the drawn samples PRINTSAMPLE=1
 PRINTSAMPLE=1
+LOAD=0
 
-% to load a scenario from a file
-LOAD=1
 % size robot
+
 global widthrobot
 global lengthrobot
+
 widthrobot=0.4;
 lengthrobot=0.6;
 
 
 % configuration space
-N=3; % number of dimensions
-dim= [0 5 0 5 0 2*pi]; % lower and upper limit of the space
+N=3;
+dim= [0 5 0 5 0 2*pi];
 
 
 % tree
@@ -65,7 +60,7 @@ I=500;
 
 % initial and end pose
 qinit=[2;1;0];
-qgoal=[2;4;0];
+qgoal=[4;3.5;0];
 radiusGoal=0.70;
 
 
@@ -94,13 +89,13 @@ obs(3).position=[1;3];
 obs(3).radius=0.51;
 
 
-obs(4).position=[4.5;4.5];
+obs(4).position=[1;2.5];
 obs(4).radius=0.51;
 
 obs(5).position=[1;5];
 obs(5).radius=0.51;
 
-obs(5).position=[4;0.5];
+obs(5).position=[4;3];
 obs(5).radius=0.21;
 
 
@@ -149,13 +144,13 @@ tau(1).edgeq= [];
 tau(1).edgeu= [];
 tau(1).pid=0;
 
-% initialize variables
+
 addedVert=1;
 collision=0;
 goalFound=0;
 
 % for i=1:I
-    while(~goalFound)
+    while(goalFound<1)
     
     %% Generate Configuration
     
@@ -178,7 +173,7 @@ goalFound=0;
     
     %% Nearest Vertex
     
-    vnear=nearesttree(tau,qrand);
+    vnear=nearestTree(tau,qrand);
     
     
     %% Extend
@@ -192,7 +187,12 @@ goalFound=0;
         collision=collision+1;
         continue
     end
-    disp('Expansion done')
+    
+    flag_regression=regression(vnear,vnew,tau);
+    if(flag_regression == 1)
+        disp('regression')
+        continue
+    end
     
     %% save the vnew into the tree
     addedVert=addedVert+1;
@@ -234,8 +234,8 @@ end
 if(goalFound==1)
 figure(10),hold on,
 [npoints nc]=size(p);
-step=35
-for i=1:step:npoints
+
+for i=1:npoints
     drawrobot(p(i,:),'r',1,widthrobot,lengthrobot);
 end
 
